@@ -1,20 +1,39 @@
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import UserListScreen from './UserListScreen';
+import UserDetailsScreen from './UserDetailsScreen';
+import CreateUserScreen from './CreateUserScreen';
+import { createTable } from './database';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    createTable();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="UserList">
+        <Stack.Screen
+          name="UserList"
+          component={UserListScreen}
+          options={{ title: 'Users List' }}
+        />
+        <Stack.Screen
+          name="UserDetails"
+          component={UserDetailsScreen}
+          options={{ title: 'User Details' }}
+        />
+        <Stack.Screen
+          name="CreateUser"
+          component={CreateUserScreen}
+          options={{ title: 'Create User' }}
+        />
+      </Stack.Navigator>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
